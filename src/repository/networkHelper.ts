@@ -1,7 +1,8 @@
-import axios from 'axios';
+import axios, {AxiosRequestConfig} from 'axios';
 import {Alert} from 'react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import * as RootNavigator from 'routes/root-navigator';
+import * as RootNavigator from 'src/routes/root-navigator';
+import {getValue} from '@utils/storage/index';
 
 const axiosInstance = axios.create({
   baseURL: '',
@@ -27,4 +28,12 @@ axiosInstance.interceptors.response.use(
   },
 );
 
-export default axiosInstance;
+export const apiCall = async (config: AxiosRequestConfig) => {
+  const token = await getValue('token');
+  config.headers = {
+    Authorization: `Bearer ${token}`,
+    Accept: 'application/vnd.providesk; version=1',
+  };
+  console.log(config);
+  return axiosInstance(config);
+};

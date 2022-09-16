@@ -7,8 +7,12 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import {scaleFonts} from '@utils/helper';
+import {useAppDispatch} from '@reducers/index';
+import {authenticateUser} from '@reducers/userReducer';
 
 const Splash: React.FC = () => {
+  let dispatch = useAppDispatch();
+
   useEffect(() => {
     GoogleSignin.configure();
   }, []);
@@ -17,7 +21,13 @@ const Splash: React.FC = () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo);
+      dispatch(
+        authenticateUser({
+          email: userInfo?.user?.email,
+          name: userInfo?.user?.name,
+          id: userInfo?.user?.id,
+        }),
+      );
     } catch (error) {
       if (error?.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('user cancelled the login flow');
