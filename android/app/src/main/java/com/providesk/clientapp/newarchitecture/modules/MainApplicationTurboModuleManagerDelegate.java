@@ -1,4 +1,4 @@
-package com.providesk_mobile_app.newarchitecture.modules;
+package com.providesk.clientapp.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

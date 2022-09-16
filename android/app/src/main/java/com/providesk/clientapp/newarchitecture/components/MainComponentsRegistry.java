@@ -1,4 +1,4 @@
-package com.providesk_mobile_app.newarchitecture.components;
+package com.providesk.clientapp.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

@@ -1,4 +1,4 @@
-package com.providesk_mobile_app;
+package com.providesk.clientapp;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
