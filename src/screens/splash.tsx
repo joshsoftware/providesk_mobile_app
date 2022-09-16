@@ -9,6 +9,7 @@ import {
 import {scaleFonts} from '@utils/helper';
 import {useAppDispatch} from '@reducers/index';
 import {authenticateUser} from '@reducers/userReducer';
+import * as Navigator from 'src/routes/root-navigator';
 
 const Splash: React.FC = () => {
   let dispatch = useAppDispatch();
@@ -21,13 +22,17 @@ const Splash: React.FC = () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      dispatch(
+      const data = await dispatch(
         authenticateUser({
           email: userInfo?.user?.email,
           name: userInfo?.user?.name,
           id: userInfo?.user?.id,
         }),
-      );
+      ).unwrap();
+
+      if (data.data.auth_token != null) {
+        Navigator.replace('home');
+      }
     } catch (error) {
       if (error?.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('user cancelled the login flow');
@@ -66,6 +71,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
     fontWeight: 'bold',
     fontSize: scaleFonts(58),
+    marginBottom: 24,
   },
 });
 

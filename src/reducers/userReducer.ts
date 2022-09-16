@@ -33,6 +33,7 @@ export const authenticateUser = createAsyncThunk(
         setValue('token', response?.data?.data?.auth_token);
         setValue('username', response?.data?.data?.name);
       }
+
       return response?.data;
     } catch (error) {
       console.log(error);
