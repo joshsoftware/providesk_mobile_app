@@ -13,6 +13,8 @@ import * as Navigator from './root-navigator';
 import {Platform, UIManager} from 'react-native';
 import * as colors from '@res/colors';
 import Splash from '../screens/splash';
+import Home from '../screens/home';
+import Create from '@screens/create';
 
 export const PROVIDESK_THEME: Theme = {
   ...DefaultTheme,
@@ -36,6 +38,11 @@ const defaultStackOptions: StackNavigationOptions = {
 
 const ShowHeader: StackNavigationOptions = {
   headerTintColor: colors.PRIMARY,
+  headerTitleStyle: {
+    fontFamily: 'Montserrat',
+    color: colors.BLACK,
+    fontWeight: 'bold',
+  },
 };
 
 const Routes = () => {
@@ -51,6 +58,16 @@ const Routes = () => {
           name="splash"
           component={Splash}
           options={defaultStackOptions}
+        />
+        <Stack.Screen
+          name="home"
+          component={Home}
+          options={{...ShowHeader, title: 'Providesk'}}
+        />
+        <Stack.Screen
+          name="create"
+          component={Create}
+          options={{...ShowHeader, title: 'Raise Ticket'}}
         />
       </Stack.Navigator>
     </NavigationContainer>
