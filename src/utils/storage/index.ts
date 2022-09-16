@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export type keys = 'username' | 'token' | 'user-info';
+export type keys = 'token' | 'username';
 
 type setter = (key: keys, value: string) => Promise<void>;
 type getter = (key: keys) => Promise<string | null>;
@@ -22,4 +22,4 @@ const getValue: getter = async key => {
   }
 };
 
-export default {setValue, getValue};
+export {setValue, getValue};

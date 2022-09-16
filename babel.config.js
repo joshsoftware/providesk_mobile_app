@@ -22,7 +22,7 @@ module.exports = {
           '@utils': './src/utils/',
           '@screens': './src/screens/',
           '@reducers': './src/reducers/',
-          '@repo': './src/repository/',
+          '@repository': './src/repository/',
         },
       },
     ],
