@@ -12,7 +12,7 @@ import {
 import * as Navigator from './root-navigator';
 import {Platform, UIManager} from 'react-native';
 import * as colors from '@res/colors';
-import Splash from '@screens/splash';
+import Splash from '../screens/splash';
 
 export const PROVIDESK_THEME: Theme = {
   ...DefaultTheme,
