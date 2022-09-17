@@ -14,6 +14,7 @@ export const WHITE2 = '#ffffff33';
 export const BG_LIGHT = WHITE;
 // export const BG_DARK = '#e0e0ff';
 export const BG_DARK = "#1371FF33";
+export const BG_EXTRA_LIGHT = "#1371FF22";
 export const BLACK = '#000';
 
 export const PLACEHOLDER = '#9d9f9e';

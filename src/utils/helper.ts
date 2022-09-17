@@ -15,6 +15,22 @@ export const ISTMoment = (dateString: string | number): Moment => {
   return moment(dateString).add(330, 'minutes');
 };
 
+export const getDisplayDate = (inputString: string): string => {
+  try {
+    return moment(inputString, TIME_FORMAT).format('DD-MMM-YY');
+  } catch (e) {}
+
+  return '';
+};
+
+export const getDisplayTime = (inputString: string): string => {
+  try {
+    return moment(inputString, TIME_FORMAT).format('HH:mm A');
+  } catch (e) {}
+
+  return '';
+};
+
 export const padZeros = (n: Number) => (n < 10 ? `0${n}` : `${n}`);
 
 export const dateTimeString = (d: Moment) => d.format(TIME_FORMAT);
