@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     fontSize: scaleFonts(16),
     textAlignVertical: 'top',
     fontWeight: '400',
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-SemiBold',
     minHeight: scaleFonts(350),
   },
   chipContainer: {

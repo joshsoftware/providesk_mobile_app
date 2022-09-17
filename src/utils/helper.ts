@@ -8,6 +8,7 @@ const {width} = Dimensions.get('window');
 export const BASE_WIDTH = 423;
 
 export const TIME_FORMAT = 'MMM-DD YYYY HH:mm A';
+export const SERVER_TIME_FORMAT = TIME_FORMAT;
 
 export const scaleFonts = (fontSize: number) => (fontSize * width) / BASE_WIDTH;
 
@@ -17,7 +18,7 @@ export const ISTMoment = (dateString: string | number): Moment => {
 
 export const getDisplayDate = (inputString: string): string => {
   try {
-    return moment(inputString, TIME_FORMAT).format('DD-MMM-YY');
+    return moment(inputString, SERVER_TIME_FORMAT).format('DD-MMM-YY');
   } catch (e) {}
 
   return '';
@@ -25,9 +26,16 @@ export const getDisplayDate = (inputString: string): string => {
 
 export const getDisplayTime = (inputString: string): string => {
   try {
-    return moment(inputString, TIME_FORMAT).format('HH:mm A');
+    return moment(inputString, SERVER_TIME_FORMAT).format('HH:mm A');
   } catch (e) {}
 
+  return '';
+};
+
+export const getDisplayDateTime = (inputString: string): string => {
+  try {
+    return moment(inputString).format(TIME_FORMAT);
+  } catch (e) {}
   return '';
 };
 

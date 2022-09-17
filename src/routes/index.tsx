@@ -15,6 +15,7 @@ import * as colors from '@res/colors';
 import Splash from '../screens/splash';
 import Home from '../screens/home';
 import Create from '@screens/create';
+import Details from '@screens/details';
 
 export const PROVIDESK_THEME: Theme = {
   ...DefaultTheme,
@@ -68,6 +69,11 @@ const Routes = () => {
           name="create"
           component={Create}
           options={{...ShowHeader, title: 'Raise Ticket'}}
+        />
+        <Stack.Screen
+          name="details"
+          component={Details}
+          options={{...ShowHeader, title: 'Ticket Details'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

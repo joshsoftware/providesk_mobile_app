@@ -4,13 +4,18 @@ import {scaleFonts} from '@utils/helper';
 import * as Colors from '@res/colors';
 
 const ChipCard = (props: any) => {
-  const {item, isSelected, onPress} = props;
+  const {item, isSelected, hideImage, onPress} = props;
 
+  const showImage = !(hideImage === true) && isSelected;
   return (
     <TouchableOpacity
-      style={[styles.chipCard, isSelected && styles.selectedChipCard]}
-      onPress={() => onPress(item)}>
-      {isSelected && (
+      style={[
+        styles.chipCard,
+        isSelected && styles.selectedChipCard,
+        showImage && styles.imageShown,
+      ]}
+      onPress={() => onPress && onPress(item)}>
+      {isSelected && showImage && (
         <Image
           source={require('@assets/images/check.png')}
           style={styles.icon}
@@ -46,8 +51,10 @@ const styles = StyleSheet.create({
     fontSize: scaleFonts(16),
     color: Colors.PRIMARY,
   },
-  selectedChipCard: {
+  imageShown: {
     paddingStart: 0,
+  },
+  selectedChipCard: {
     backgroundColor: Colors.BG_DARK,
     color: Colors.WHITE,
     borderWidth: 1,
