@@ -30,6 +30,7 @@ const Splash: React.FC = () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
+      console.log(userInfo);
       const data = await dispatch(
         authenticateUser({
           email: userInfo?.user?.email,
