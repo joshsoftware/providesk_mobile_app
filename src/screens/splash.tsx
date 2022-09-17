@@ -10,12 +10,20 @@ import {scaleFonts} from '@utils/helper';
 import {useAppDispatch} from '@reducers/index';
 import {authenticateUser} from '@reducers/userReducer';
 import * as Navigator from 'src/routes/root-navigator';
+import {getValue} from '@utils/storage';
 
 const Splash: React.FC = () => {
   let dispatch = useAppDispatch();
 
+  const checkIsUserLoggedIn = async () => {
+    if ((await GoogleSignin.isSignedIn()) && (await getValue('token'))) {
+      Navigator.replace('home');
+    }
+  };
+
   useEffect(() => {
     GoogleSignin.configure();
+    checkIsUserLoggedIn();
   }, []);
 
   const onSignIn = async () => {
@@ -26,7 +34,7 @@ const Splash: React.FC = () => {
         authenticateUser({
           email: userInfo?.user?.email,
           name: userInfo?.user?.name,
-          id: userInfo?.user?.id,
+          google_user_id: userInfo?.user?.id,
         }),
       ).unwrap();
 

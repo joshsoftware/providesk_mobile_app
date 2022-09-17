@@ -5,12 +5,14 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {scaleFonts} from '@utils/helper';
 import ChipCard from '@components/ChipCard';
 import Button from '@components/Button';
 import * as Colors from '@res/colors';
+// import ChipCardSkeleton from '@components/ChipCardSkeleton';
 
 const DEPARTMENTS = [
   'Admin',
@@ -20,10 +22,11 @@ const DEPARTMENTS = [
   'Client',
   'Employees',
 ];
-
 const CATEGORIES = ['Payroll', 'Reimbursement', 'Taxation'];
 
 const create = () => {
+  const [isDepartmentLoading, setIsDepartmentLoading] = useState(true);
+  const [isCategoriesLoading, setIsCategoriesLoading] = useState(false);
   const [createComplaintFormData, setCreateComplaintFormData] = useState({
     title: '',
     description: '',
@@ -52,6 +55,19 @@ const create = () => {
     }));
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsDepartmentLoading(false);
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
+    setIsCategoriesLoading(true);
+    setTimeout(() => {
+      setIsCategoriesLoading(false);
+    }, 2000);
+  }, [createComplaintFormData.department]);
+
   return (
     <SafeAreaView style={styles.root}>
       <ScrollView style={styles.root}>
@@ -74,16 +90,20 @@ const create = () => {
           <View>
             <Text style={styles.selectHeading}>Department:</Text>
             <View style={styles.chipContainer}>
-              {DEPARTMENTS.map((item, index) => {
-                return (
-                  <ChipCard
-                    key={index}
-                    item={item}
-                    isSelected={createComplaintFormData.department === item}
-                    onPress={onSelectDepartment}
-                  />
-                );
-              })}
+              {isDepartmentLoading ? (
+                <ActivityIndicator color={Colors.PRIMARY} />
+              ) : (
+                DEPARTMENTS.map((item, index) => {
+                  return (
+                    <ChipCard
+                      key={index}
+                      item={item}
+                      isSelected={createComplaintFormData.department === item}
+                      onPress={onSelectDepartment}
+                    />
+                  );
+                })
+              )}
             </View>
           </View>
 
@@ -93,16 +113,20 @@ const create = () => {
               <Text>Please select department first.</Text>
             ) : (
               <View style={styles.chipContainer}>
-                {CATEGORIES.map((item, index) => {
-                  return (
-                    <ChipCard
-                      key={index}
-                      item={item}
-                      isSelected={createComplaintFormData.category === item}
-                      onPress={onSelectCategory}
-                    />
-                  );
-                })}
+                {isCategoriesLoading ? (
+                  <ActivityIndicator color={Colors.PRIMARY} />
+                ) : (
+                  CATEGORIES.map((item, index) => {
+                    return (
+                      <ChipCard
+                        key={index}
+                        item={item}
+                        isSelected={createComplaintFormData.category === item}
+                        onPress={onSelectCategory}
+                      />
+                    );
+                  })
+                )}
               </View>
             )}
           </View>

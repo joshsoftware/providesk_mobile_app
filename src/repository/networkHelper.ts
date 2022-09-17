@@ -1,11 +1,11 @@
 import axios, {AxiosRequestConfig} from 'axios';
-import {Alert} from 'react-native';
+import {Alert, AsyncStorage} from 'react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import * as RootNavigator from 'src/routes/root-navigator';
 import {getValue} from '@utils/storage/index';
 
 const axiosInstance = axios.create({
-  baseURL: '',
+  baseURL: 'https://safe-bayou-18083.herokuapp.com',
 });
 
 axiosInstance.interceptors.response.use(
@@ -21,7 +21,8 @@ axiosInstance.interceptors.response.use(
     if (error.response.status === 401) {
       RootNavigator?.resetUntil('home');
       RootNavigator?.replace('splash');
-      GoogleSignin.signOut();
+      await GoogleSignin.signOut();
+      await AsyncStorage.clear();
       Alert.alert('Session Expired!!', 'Please login again');
     }
     return Promise.reject(error);
@@ -31,9 +32,13 @@ axiosInstance.interceptors.response.use(
 export const apiCall = async (config: AxiosRequestConfig) => {
   const token = await getValue('token');
   config.headers = {
-    Authorization: `Bearer ${token}`,
+    Authorization: token ? `Bearer ${token}` : '',
     Accept: 'application/vnd.providesk; version=1',
   };
-  console.log(config);
-  return axiosInstance(config);
+  delete config.url;
+  const requestConfig = {
+    ...config,
+    url: `https://safe-bayou-18083.herokuapp.com/sessions`,
+  };
+  return axiosInstance(requestConfig);
 };
