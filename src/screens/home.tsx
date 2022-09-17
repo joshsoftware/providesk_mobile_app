@@ -121,8 +121,10 @@ const styles = StyleSheet.create({
   },
   fabParent: {
     position: 'absolute',
-    bottom: 0,
-    right: 0,
+    bottom: 16,
+    right: 16,
+    backgroundColor: Colors.WHITE,
+    borderRadius: 16,
   },
   floatingActionButton: {
     width: 56,
@@ -134,7 +136,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 16,
     zIndex: 100,
-    margin: 16,
     backgroundColor: Colors.BG_DARK,
   },
   bottomNavigation: {

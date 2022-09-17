@@ -3,14 +3,16 @@ import React, {useState} from 'react';
 import {
   FlatList,
   Image,
+  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import * as Colors from '@res/colors';
-import {scaleFonts} from '@utils/helper';
+import {getDisplayDate, getDisplayTime, scaleFonts} from '@utils/helper';
 import {RefreshControl} from 'react-native-gesture-handler';
+import * as Navigator from 'src/routes/root-navigator';
 
 const IndexList: React.FunctionComponent<{
   status: 'pending' | 'resolved';
@@ -135,11 +137,17 @@ const IndexList: React.FunctionComponent<{
 
   return response.error?.message == null || refreshing ? (
     <FlatList
+      ListHeaderComponent={
+        <Text style={styles.listHeader}>
+          {props.status === 'resolved' ? 'Resolved' : 'Pending'}
+        </Text>
+      }
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={refreshCall} />
       }
       style={styles.root}
-      data={response?.data ?? []}
+      contentContainerStyle={styles.flatListPadding}
+      data={response.error?.message != null ? [] : response.data ?? []}
       renderItem={renderProps => <ListItem {...renderProps.item} />}
       keyExtractor={item => item.ticket_id}
     />
@@ -149,17 +157,6 @@ const IndexList: React.FunctionComponent<{
       onRefresh={refreshCall}
     />
   );
-};
-
-const ListItem: React.FunctionComponent<{
-  ticket_id: string;
-  title: string;
-  department: string;
-  category: string;
-  updated: string;
-  created: string;
-}> = props => {
-  return <View />;
 };
 
 const ErrorLayout: React.FunctionComponent<{
@@ -177,6 +174,60 @@ const ErrorLayout: React.FunctionComponent<{
       <TouchableOpacity style={styles.refreshButton} onPress={props.onRefresh}>
         <Text style={styles.refreshText}>Refresh</Text>
       </TouchableOpacity>
+    </View>
+  );
+};
+
+const ListItem: React.FunctionComponent<{
+  ticket_id: string;
+  title: string;
+  department: string;
+  category: string;
+  updated: string;
+  created: string;
+}> = props => {
+  const onListItemPressed = () => {
+    Navigator.navigate('details', {ticket_id: props.ticket_id});
+  };
+
+  return (
+    <View style={styles.itemRoot}>
+      <Pressable
+        onPress={onListItemPressed}
+        android_ripple={{
+          color: Colors.BG_EXTRA_LIGHT,
+          borderless: false,
+        }}
+        style={({pressed}) => [
+          styles.itemPressableRoot,
+          pressed ? styles.itemPressedRoot : {},
+        ]}>
+        <View>
+          <Text
+            style={styles.itemHeader}
+            ellipsizeMode="tail"
+            numberOfLines={1}>
+            {props.department ?? ''}
+          </Text>
+          <Text style={styles.dateText}>
+            {getDisplayDate(props.updated ?? props.created ?? '') +
+              '\n' +
+              getDisplayTime(props.updated ?? props.created ?? '')}
+          </Text>
+          <Text
+            style={styles.itemCategory}
+            ellipsizeMode="tail"
+            numberOfLines={2}>
+            {props.category}
+          </Text>
+          <Text
+            style={styles.itemSubHeader}
+            ellipsizeMode="tail"
+            numberOfLines={1}>
+            {props.title}
+          </Text>
+        </View>
+      </Pressable>
     </View>
   );
 };
@@ -217,6 +268,62 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
     fontSize: scaleFonts(16),
     fontWeight: 'bold',
+  },
+  itemRoot: {
+    width: '100%',
+    borderRadius: 16,
+    marginStart: 8,
+  },
+  itemPressableRoot: {
+    padding: 16,
+    display: 'flex',
+    flexDirection: 'column',
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.BG_EXTRA_LIGHT,
+  },
+  itemPressedRoot: {
+    backgroundColor: Colors.BG_EXTRA_LIGHT,
+  },
+  itemHeader: {
+    fontFamily: 'Montserrat',
+    fontSize: scaleFonts(14),
+    fontWeight: 'bold',
+    color: Colors.BLACK,
+    flex: 1,
+  },
+  itemSubHeader: {
+    fontFamily: 'MontSerrat',
+    fontSize: scaleFonts(18),
+    fontWeight: 'bold',
+    color: Colors.BLACK,
+    flex: 1,
+  },
+  dateText: {
+    position: 'absolute',
+    top: -5,
+    right: 8,
+    alignItems: 'flex-end',
+    textAlign: 'right',
+    fontFamily: 'Montserrat',
+    fontSize: scaleFonts(12),
+  },
+  itemCategory: {
+    fontFamily: 'MontSerrat-SemiBold',
+    fontSize: scaleFonts(12),
+    color: Colors.BLACK,
+    paddingBottom: 3,
+  },
+  flatListPadding: {paddingBottom: 96},
+  listHeader: {
+    fontFamily: 'Montserrat',
+    fontWeight: 'bold',
+    marginStart: 8,
+    backgroundColor: Colors.WHITE,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 8,
+    fontSize: scaleFonts(16),
+    color: Colors.PRIMARY,
   },
 });
 
